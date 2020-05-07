@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load markdownify %}
+{% load comments %}
+{% block content %}
+
+    <h3>{{ guide.title }}</h3>
+    {{ guide.body|markdownify }}</p>
+
+{% endblock %}

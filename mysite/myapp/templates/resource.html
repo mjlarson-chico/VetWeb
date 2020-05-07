@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load markdownify %}
+{% load comments %}
+{% block content %}
+  <div class="resource-grid">
+    <div class="resource-grid-top">
+      <h3>{{ resource.title }}</h3>
+      <h6><a href="{{resource.uri}}"> {{ resource.uri }} </a></h6>
+    </div>
+    <div class="resource-grid-left">
+      <h4>Summary</h4>
+      <p>{{ resource.summary }}</p>
+      <h4>Description</h4>
+      <p>{{ resource.descriptionMD|markdownify }}</p>
+    </div>
+    <div class="resource-grid-right">
+      <h4>Guides</h4>
+      {% if guides %}
+        {% for guide in guides %}
+          <p><a href="{% url 'guide' resource.category resource.title guide.title %}">{{ guide.title }}</a></p>
+        {% endfor %}
+      {% else %}
+        <p>No guides</p>
+      {% endif %}
+    </div>
+    <div class="resource-grid-bottom">
+      <h4>Comments</h4>
+      {% if comment_count %}
+        <hr/>
+        <div class="comments">
+          {% render_comment_list for resource %}
+        </div>
+      {% endif %}
+        <div class="card card-block mb-5">
+          <div class="card-body">
+            <h4 class="card-title text-center pb-3">Post your comment</h4>
+              {% render_comment_form for resource %}
+          </div>
+        </div>
+
+
+
+
+    </div>
+
+  </div>
+  
+  
+
+{% endblock %}

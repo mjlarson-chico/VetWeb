@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if sites %}
+    <div class="grid-x grid-margin-x grid-padding-x">
+      {% for resources in sites %}
+      <div class="cell large-12">
+        <div class="card-info secondary">
+          <div class="card-info-content">
+            <h3 class="lead"><a href="{% url 'resource' resources.category resources.title %}">{{ resources.title }}</a></h3>
+            <p>{{ resources.summary }}</p>
+          </div>
+          <div class=card-info-link>
+            <ul class="menu">
+              {% if resources.has_guides %}
+                <li><a href="#">Guides</a></li>
+              {% endif %}
+              {% if resources.has_comments %}
+                <li><a href="#">Comments</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+        <p>No resources for this category</p>
+    {% endif %}
+  
+  
+
+{% endblock %}

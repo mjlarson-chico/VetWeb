@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="{% static "css/foundation.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "css/app.css" %}">
+    </head>
+    <body>
+      <div class="grid-container">
+        <div><img src="{% static "logo.jpg" %}"></div>
+
+        <nav class="top-bar topbar-responsive">
+          <div class="top-bar-title">
+            <span data-responsive-toggle="topbar-responsive" data-hide-for="medium">
+              <button class="menu-icon" type="button" data-toggle></button>
+            </span>
+            {% if user.is_authenticated %}
+              <div class="topbar-responsive-logo">Welcome, {{user.get_username }} - 
+              <a class="topbar-responsive-logo" href="{% url 'logout'%}?next={{request.path}}">Logout</a></div>
+            {% else %}
+              <button type="button" class="button hollow topbar-responsive-button"><a href="{% url 'login'%}?next={{request.path}}">Login</a></button>
+            {% endif %}
+          </div>
+          <div id="topbar-responsive" class="topbar-responsive-links">
+            <div class="top-bar-right">
+              <ul class="menu simple vertical medium-horizontal">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                {% if cat_list %}
+                  {% for category in cat_list %}
+                    <li><a href="{% url 'category' category.name %}">{{ category.name }}</a></li>
+                  {% endfor %}
+                {% endif %}
+                <li>
+                  <button type="button" class="button hollow topbar-responsive-button"><a href="{% url 'chat' %}">Chat</a></button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+
+
+        <p align=center>&copy; 2020 Shifty Productions, LLC.</p>
+        
+        
+
+
+
+      </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="{% static "js/app.js" %}"></script>
+    </body>
+</html>

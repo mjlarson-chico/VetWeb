@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'markdownx',
     'markdownify',
     'myapp',
-    'chat',
     'channels',
 ]
 

@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path(r'comments/', include('django_comments_xtd.urls')),
+    path(r'comments/', include('django_comments.urls')),
     path(r'markdownx/', include('markdownx.urls')),
     path('chat/', views.chat, name='chat'),
     path('accounts/', include('django.contrib.auth.urls')),

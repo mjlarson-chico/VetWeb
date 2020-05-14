@@ -13,7 +13,6 @@ class Resources(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     uri = models.URLField()
     summary = models.CharField(max_length=255)
-    description = models.TextField(max_length=8000)
     descriptionMD = MarkdownxField()
     has_guides = models.BooleanField()
     has_comments = models.BooleanField()
@@ -21,9 +20,9 @@ class Resources(models.Model):
     def __str__(self):
         return self.title
     
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('myapp.views.resource', args=[self.category, self.title])
+    # def get_absolute_url(self):
+    #     from django.urls import reverse
+    #     return reverse('myapp.views.resource', args=[self.category, self.title])
 
 
 class Guides(models.Model):

@@ -1,42 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-<textarea id="chat-log" cols="100" rows="20"></textarea><br>
-<input id="chat-message-input" type="text" size="100"><br>
-<input id="chat-message-submit" type="button" value="Send">
-<input type="hidden" id="user" name="variable" value="{{ user.get_username }}">
-{{ room_name|json_script:"room-name" }}
-<script>
-    const roomName = JSON.parse(document.getElementById('room-name').textContent);
+{% if user.is_authenticated %}
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send">
+    <input type="hidden" id="user" name="variable" value="{{ user.get_username }}">
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
-    const chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/chat/'
-    );
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
-        };
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+        );
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                document.querySelector('#chat-log').value += (data.message + '\n');
+            };
 
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+            chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
 
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
+            document.querySelector('#chat-message-input').focus();
+            document.querySelector('#chat-message-input').onkeyup = function(e) {
+                if (e.keyCode === 13) {  // enter, return
+                    document.querySelector('#chat-message-submit').click();
+                }
+            };
 
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = document.getElementById("user").value + ": " + messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
-        };
-    </script>
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = document.getElementById("user").value + ": " + messageInputDom.value;
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInputDom.value = '';
+            };
+        </script>
+    {% else %}
+        <p>Please <a href="{% url 'login'%}?next={{request.path}}">log in</a> to chat.</p>
+    {% endif %}
 
 {% endblock %}

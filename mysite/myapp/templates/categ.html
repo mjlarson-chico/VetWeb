@@ -12,7 +12,7 @@
           <div class=card-info-link>
             <ul class="menu">
               {% if resources.has_guides %}
-                <li><a href="#">Guides</a></li>
+                <li><a href="{% url 'resource' resources.category resources.title %}">Guides</a></li>
               {% endif %}
               {% if resources.has_comments %}
                 <li><a href="#">Comments</a></li>

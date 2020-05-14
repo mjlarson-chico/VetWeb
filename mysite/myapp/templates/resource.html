@@ -25,6 +25,7 @@
     </div>
     <div class="resource-grid-bottom">
       <h4>Comments</h4>
+      {% get_comment_count for resource as comment_count %}
       {% if comment_count %}
         <hr/>
         <div class="comments">
@@ -34,7 +35,23 @@
         <div class="card card-block mb-5">
           <div class="card-body">
             <h4 class="card-title text-center pb-3">Post your comment</h4>
-              {% render_comment_form for resource %}
+              <!-- {% render_comment_form for resource %} -->
+              {% if user.is_authenticated %}
+                {% get_comment_form for resource as form %}
+                <form action="{% comment_form_target %}" method="POST">
+                {% csrf_token %}
+                {{ form.comment }}
+                {{ form.honeypot }}
+                {{ form.content_type }}
+                {{ form.object_pk }}
+                {{ form.timestamp }}
+                {{ form.security_hash }}
+                <input type="hidden" name="next" value="{% url 'resource' resource.category resource.title %}" />
+                <input type="submit" value="Add comment" id="id_submit" />
+                </form>
+            {% else %}
+                <p>Please <a href="{% url 'login'%}?next={{request.path}}">log in</a> to leave a comment.</p>
+            {% endif %}
           </div>
         </div>
 

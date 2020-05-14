@@ -25,6 +25,8 @@ def resource(request, resources_category, resources_title):
     cat_list = Category.objects.order_by('name')
     if resource.has_guides:
         guides = Guides.objects.filter(resource_id=resource.id)
+    else:
+        guides = None
     return render(request, 'resource.html', {'resource': resource, 'cat_list': cat_list, 'guides': guides})
 
 def guide(request, resources_category, resources_title, guide_title):
@@ -39,3 +41,5 @@ def chat(request):
     room_name = 'chat'
     cat_list = Category.objects.order_by('name')
     return render(request, 'chat/room.html', {'room_name': room_name, 'cat_list': cat_list})
+
+    
